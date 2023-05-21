@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 const adminSchema = new Schema(
   {
     username: {
+      type: String,
+      // required: true,
+    },
+    email: {
       type: String,
       required: true,
     },
@@ -34,5 +38,15 @@ adminSchema.pre("save", function (next) {
       next(err);
     });
 });
+
+adminSchema.methods.isValidPassword = async function (password) {
+  try {
+    console.log(this.password);
+    return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const Admin = model("Admin", adminSchema);
 export default Admin;

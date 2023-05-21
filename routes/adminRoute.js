@@ -9,29 +9,29 @@ import {
   login,
   logout,
 } from "../controllers/adminController.js";
-import verifyToken from "../middleware/authFun.js";
+import { verifyToken } from "../middlewear/authFun.js";
 
-router.get("/", verifyToken, getAdmin);
+router.get("/", getAdmin);
 
-router.get("/:id", verifyToken, getAdminById);
+router.get("/:id", getAdminById);
 
-router.put("/:id", verifyToken, updateAdmin);
+router.put("/:id", updateAdmin);
 
-router.delete("/:id", verifyToken, deleteAdmin);
+router.delete("/:id", deleteAdmin);
 
-router.post("/add", verifyToken, Add);
+router.post("/add", Add);
 
 router.post("/login", login);
 
 router.post("/logout", logout);
 
-router.post("/token", verifyToken,(req,res)=>{
-  if(req.user){
+router.post("/token", verifyToken, (req, res) => {
+  if (req.user) {
     return res.status(200).json({
-      status:200,
-      message:"You are logged in"
-    })
+      status: 200,
+      message: "You are logged in",
+    });
   }
-})
+});
 
 export default router;
