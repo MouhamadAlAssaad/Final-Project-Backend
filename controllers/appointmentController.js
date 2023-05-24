@@ -41,16 +41,27 @@ async function deleteAppoitment (req,res){
     }
 } 
 
-async function UpdateAppoitment (req ,res){
-    let id = req.params.id
-    let body = req.body 
-    try{
-        const data = await Appointment.findByIdAndUpdate({_id:id},{$set:body})
-        res.status(200).json({message:'Appointment Updated successfully' , data})
-    }catch(err){
-        res.status(404).json({err})
+// async function UpdateAppoitment (req ,res){
+//     let id = req.params.id
+//     let body = req.body 
+//     try{
+//         const data = await Appointment.findByIdAndUpdate({_id:id},{$set:body})
+//         res.status(200).json({message:'Appointment Updated successfully' , data})
+//     }catch(err){
+//         res.status(404).json({err})
+//     }
+// }
+async function UpdateAppoitment(req, res, next) {
+    let id = req.params.id;
+    let data = req.body;
+    try {
+      await Appointment.updateOne({ _id: id},{ $set: data });
+      let response = await Appointment.findById({ _id: id });
+      res.status(200).json({ message: "Appointment Updated successfully", response });
+    } catch (err) {
+      res.status(400).json(err);
     }
-}
+  }
 
 const appointment = {AddAppointment,getAppoitment,getAppoitmentByID,deleteAppoitment,UpdateAppoitment}
 

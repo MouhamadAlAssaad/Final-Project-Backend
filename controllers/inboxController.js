@@ -11,34 +11,44 @@ export function addInbox(req, res, next) {
     }
 }
 
-export  function getInbox(req, res, next) {
+
+
+
+export async function getInbox(req, res, next) {
     try {
-        const get =  Inbox.find({})
+        const get = await Inbox.find({})
         res.status(200).json({ response: get })
     } catch (err) {
         res.status(400).json(err)
     }
 }
 
-export  function getInboxById(req, res, next) {
-    let id=req.params.id
-    try {
-        const get =  Inbox.findById({_id:id})
-        res.status(200).json({ response: get })
-    } catch (err) {
-        res.status(400).json(err)
-    }
-}
 
-export  function deleteInbox(req, res, next) {
-    let id = req.params.id
+
+ export async function getInboxById(req, res, next) {
+    let id = req.params.id;
     try {
-         Inbox.findByIdAndDelete({ _id: id })
-        res.status(200).json({ message: "Message deleted successfully" })
+      const getById = await Inbox.findById({ _id: id });
+      res.status(200).json({ response: getById });
     } catch (err) {
-        res.status(400).json(err)
+      res.status(400).json(err);
     }
-}
+  }
+
+  export async function deleteInbox(req, res, next) {
+    let id = req.params.id;
+    try {
+      const deletedMessage = await Inbox.findByIdAndDelete({ _id: id });
+      if (deletedMessage) {
+        res.status(200).json({ message: "Message deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Message not found" });
+      }
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+  
 
 export  function updateInbox(req,res,next){
     let id = req.params.id
